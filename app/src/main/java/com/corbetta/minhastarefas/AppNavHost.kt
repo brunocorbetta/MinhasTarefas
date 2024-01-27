@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.corbetta.minhastarefas.ui.AddTask
 import com.corbetta.minhastarefas.ui.Home
+import com.corbetta.minhastarefas.ui.TaskDetails
 
 @Composable
 fun AppNavHost() {

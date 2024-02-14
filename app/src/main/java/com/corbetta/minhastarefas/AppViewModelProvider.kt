@@ -6,6 +6,7 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.corbetta.minhastarefas.ui.AddTaskViewModel
+import com.corbetta.minhastarefas.ui.HomeViewModel
 
 object AppViewModelProvider {
     val Factory = viewModelFactory {
@@ -14,6 +15,10 @@ object AppViewModelProvider {
             AddTaskViewModel(
                taskApplication().container.tasksRepository
             )
+        }
+
+        initializer {
+            HomeViewModel(taskApplication().container.tasksRepository)
         }
     }
 }

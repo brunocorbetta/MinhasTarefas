@@ -29,7 +29,9 @@ import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun AddTask(viewModel: AddTaskViewModel = viewModel(factory = AppViewModelProvider.Factory )){
+fun AddTask(navigateBack: () -> Unit,
+            viewModel: AddTaskViewModel = viewModel(factory = AppViewModelProvider.Factory
+            )){
 
 
     val coroutineScope = rememberCoroutineScope()
@@ -46,6 +48,7 @@ fun AddTask(viewModel: AddTaskViewModel = viewModel(factory = AppViewModelProvid
             onSaveClick = {
                 coroutineScope.launch {
                     viewModel.saveTask()
+                    navigateBack()
                 }
             }
         )

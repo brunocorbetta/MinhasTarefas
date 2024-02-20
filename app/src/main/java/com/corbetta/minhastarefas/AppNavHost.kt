@@ -24,7 +24,7 @@ fun AppNavHost() {
         }
 
         composable("AddTask") {
-            AddTask()
+            AddTask(navigateBack = { navController.popBackStack() },)
         }
     }
 

@@ -1,4 +1,4 @@
-#App Minhas Tarefas
+# App Minhas Tarefas
 
 Aplicativo para uso pessoal para colocar as minhas tarefas do dia a dia.
 

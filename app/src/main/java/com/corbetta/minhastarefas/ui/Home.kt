@@ -3,8 +3,11 @@ package com.corbetta.minhastarefas.ui
 
 import android.annotation.SuppressLint
 import android.graphics.Paint.Align
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,7 +22,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.AlertDialog
@@ -55,6 +60,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.corbetta.minhastarefas.AppViewModelProvider
 import com.corbetta.minhastarefas.data.Task
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
@@ -73,6 +79,7 @@ fun Home(
     var taskToDelete by rememberSaveable { mutableStateOf<Task?>(null) }
 
     Scaffold(
+        containerColor = MaterialTheme.colorScheme.scrim,
         floatingActionButton = {
             FloatingActionButton(
                 modifier = Modifier.padding(1.dp),
@@ -86,7 +93,7 @@ fun Home(
     ) {
 
         Surface (
-            color = MaterialTheme.colorScheme.tertiary,
+            contentColor = MaterialTheme.colorScheme.surface,
             modifier = Modifier
                 .width(500.dp)
                 .height(80.dp)
@@ -97,7 +104,7 @@ fun Home(
             Text(
                 text = "Tarefas",
                 style = MaterialTheme.typography.displaySmall,
-                color = MaterialTheme.colorScheme.onBackground,
+                color = MaterialTheme.colorScheme.scrim,
                 overflow = TextOverflow.Clip,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
@@ -113,6 +120,7 @@ fun Home(
 
         Column(modifier = Modifier
             .fillMaxSize()
+            .verticalScroll(rememberScrollState())
             .padding(1.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
@@ -145,6 +153,7 @@ fun Home(
                     .padding(1.dp)
 
 
+
             )
         }
     }
@@ -167,6 +176,7 @@ private fun HomeBody(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TaskList(
     taskList: List<Task>,
@@ -176,7 +186,7 @@ fun TaskList(
     LazyRow(modifier = modifier) {
         items(items = taskList, key = { it.id }) {item ->
             TaskItem(task = item,
-                onItemClick = onItemClick)
+                onItemClick = onItemClick, modifier = Modifier.animateItemPlacement(tween(durationMillis = 250, delayMillis = 300)))
 
         }
     }
@@ -190,7 +200,7 @@ private fun TaskItem(
 
         elevation = CardDefaults.cardElevation(defaultElevation = 12.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.tertiary,
+            containerColor = MaterialTheme.colorScheme.surface,
             contentColor = MaterialTheme.colorScheme.background
         ),
         shape = RoundedCornerShape(8.dp),
@@ -215,7 +225,7 @@ private fun TaskItem(
                     text = task.titulo,
                     style = MaterialTheme.typography.displaySmall,
                     textAlign = TextAlign.Center,
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = MaterialTheme.colorScheme.scrim,
                     modifier = modifier.padding(4.dp)
 
                 )
@@ -223,7 +233,7 @@ private fun TaskItem(
                     text = task.descricao,
                     style = MaterialTheme.typography.bodyLarge,
                     textAlign = TextAlign.Justify,
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = MaterialTheme.colorScheme.scrim,
                     modifier = modifier.padding(4.dp)
 
                 )
@@ -241,6 +251,7 @@ private fun DeleteTask(
     AlertDialog(onDismissRequest = { /**/ },
         title = { Text(text = "Atenção") },
         text = { Text(text = "Deletar Tarefa?") },
+        containerColor = MaterialTheme.colorScheme.secondaryContainer,
         modifier = modifier,
         dismissButton = {
             TextButton(onClick = onDeleteCancel) {
